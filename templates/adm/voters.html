@@ -1,0 +1,686 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="content">
+  <hr>
+  <div class="row" data-aos="fade-up" data-aos-duration="1500" data-aos-easing="ease-in-out">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header ">
+          <h1 class="card-title d-inline">Voters</h1> 
+          <div class="dropdown float-right">
+            <button type="button" class="btn btn-link btn-icon" data-toggle="dropdown">
+              <i class="tim-icons icon-settings-gear-63"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" data-toggle="modal" data-target="#add_voter">Add Voter</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#upload_voters">Upload Voters</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#delete_voters">Delete all Voters</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#print_passwords">Print Voters Password</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive ps">
+              <table class="table data-table">
+                <thead>              
+                  <tr>
+                    <th class="text-center">Student</th>
+                    <th></th>
+                    <th class="text-center">Student ID</th>
+                    <th class="text-center">Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for voter in voters %}
+                  <tr>
+                    <td>
+                        <div class="photo">
+                            <img src="{{voter.photo.url}}" alt="{{voter}}" class="avatar">
+                        </div>
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">
+                          {{ voter }}
+                        </h6>
+                        <p class="text-xs text-simple mb-0">
+                          {{ voter.college }}
+                        </p>
+                      </div>
+                    </td>
+                    <td class="text-center">{{ voter.username }} </td>
+                    <td class="text-center">
+                      {% if voter.voted %}
+                      <div class="badge bg-primary text-white rounded-pill p-2">
+                              Voted
+                      </div>
+                      {% else %}
+                      <div class="badge bg-danger text-white rounded-pill p-2">
+                        Pending
+                      </div> 
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownmenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="fas fa-ellipsis"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownmenuButton">
+                            <a class="dropdown-item edit" data-id="{{ voter.id }}">Edit</a>
+                            <a class="dropdown-item delete" data-id="{{ voter.id }}">Delete</a>
+                        </div>  
+                      </div>
+                    </td> 
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>  
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow mb-4">
+        <div class="card-header ">
+          <h1 class="card-title d-inline">Colleges</h1>
+          <div class="dropdown float-right">
+            <button type="button" class="btn btn-link btn-icon" data-toggle="dropdown">
+                <i class="tim-icons icon-settings-gear-63"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item"  data-toggle="modal" data-target="#add_college">Add College</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#delete_all_college">Delete all Colleges</a>
+            </div>
+          </div>
+        </div> 
+        <div class="card-body">
+          <div class="table">
+            <table class="table datatable-no-search">
+              <thead>
+                <tr>
+                  <th>
+
+                  </th>
+                  <th>
+
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for col in college %}
+                <tr>
+                  <td>{{ col.name }}</td>
+                  <td>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="fas fa-ellipsis"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <div class="d-flex flex-wrap">
+                            <a class="dropdown-item update" data-id="{{ col.id }}">Edit</a>
+                            <a class="dropdown-item erase" data-id="{{ col.id }}">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                  </td>
+                </tr>
+                {% endfor%}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block modal %}
+
+<!--Add Voter Modal-->
+<div class="modal fade" id="add_voter">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title">ADD VOTER</h3>
+        <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="forme form-horizontal" method="post">
+          {% csrf_token %}
+          <div class="container-fluid mb-4">
+            {% for field in form %}
+              <div class="form-group has-feedback">
+                <span class="text-danger">
+                {{field.errors}}
+                </span>
+                {% if field.name == "college" %}
+                  {{field.label_tag}}
+                {% else %}
+                {% endif %}
+                {{field}}
+              </div>
+            {% endfor %}
+            <div class="form-group has-feedback">
+              <div class="d-flex justify-content-center align-items-center">
+                <input type="password" class="form-control" id="edit_password" name="password" placeholder="Password">
+                <input type="hidden" id="print_password" name="print_password">
+                <a href = "#" type="button" class="d-flex justify-content-center align-content-center" id="preview_password">
+                  <span class="ml-2 clickable" id="toggle_password">
+                    <i class="fas fa-eye-slash"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <div id="password-generator" class="d-flex justify-content-center">
+              <a class="btn btn-success" id="generate"> Generate Password</a>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+            <button class="btn-success btn-lg" type="submit">ADD</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Upload Voters Modal -->
+<div class="modal fade" id="upload_voters">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title">UPLOAD VOTERS</h3>
+        <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="text-bold">Follow these steps:</h6>
+        <ol>
+          <li>Ensure your file is in the correct format "sample.csv"</li>
+          <li>Verify that the correct headers are correctly named and formatted according to the image below.
+            <img src="{% static 'img/admin/csv_headers.png' %}" alt="csv_headers">
+          </li>
+        </ol>
+        <form class="forme form-horizontal" method="post" enctype="multipart/form-data" action="{% url 'upload_voters' %}" id="csv_upload_form">
+          {% csrf_token %}
+            <label for="csv" class="col-sm-4 control-label">Select a file:</label>
+            <div class="col-sm-12">
+              <div> 
+                <input type="file" id="csv" name="csv_file" accept=".csv" class="form-control" required>
+              </div>
+          </div>
+          <div class="modal-footer justify-content-center mt-4">
+            <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+            <button class="btn-lg btn-success" type="submit">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Edit Voter-->
+<div class="modal fade" id="edit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title"> UPDATE VOTER</h3>
+        <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="forme form-horizontal" method="post" action="{% url 'update_voter' %}">
+          {% csrf_token %}
+          <input type="hidden" class="voter_id" name="voter_id" id="voter_id">
+
+            <div class="form-group has feedback">
+              <label class="control-label">Password:</label>
+              <input type="text" id="edit_print_password"  class="form-control" name="print_password">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">ID Number:</label>
+              <input type="text" id="edit_studentid"  class="form-control" name="username">
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label">First Name:</label>
+              <input type="text" id="edit_firstname"  class="form-control" name="first_name">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Middle Name:</label>
+              <input type="text" id="edit_middlename"  class="form-control" name="middle_name">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Last Name:</label>
+              <input type="text" id="edit_lastname"  class="form-control" name="last_name">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="control-label">College:</label>
+              <select name="college" class="form-control" id="edit_college">
+                <option value="">---------</option>
+              </select>
+            </div>       
+
+            <div class="modal-footer justify-content-center">
+              <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+              <button class="btn-lg btn-success" type="submit">Submit</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Delete Voter -->
+<div class="modal fade" id="delete">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header align-items-center pb-2">
+        <h3 class="modal-title"></h3>
+        <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <form class="forme form-horizontal" method="post" action="{% url 'delete_voter' %}">
+            {% csrf_token %}
+            <input type="hidden" class="voter_id" name="voter_id">
+            <div class="text-center">
+                <p>DELETE VOTER</p>
+                <h2 class="bold fullname"></h2>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-lg btn-danger">Confirm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- Delete All Voters-->
+<div class="modal fade" id="delete_voters">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header align-items-center pb-2">
+        <h3 class="modal-title"> </h3>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <div class="text-center">
+              <h3 class="text-bold">All Voters will be deleted.</h3>  
+              <p>Please click "Confirm" to delete.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <a type="button" class="btn-lg btn-simple close" data-dismiss="modal">Cancel</a>
+              <a href="{% url 'delete_all_voters' %}" type="submit" class="btn-lg btn-danger">Confirm</a>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!--Passwords-->
+<div class="modal fade bd-example-modal-lg" id="print_passwords">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title"> 
+          PRINT PASSWORDS
+        </h3>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>ID Number</th>
+              <th>Full Name</th>
+              <th>College</th>
+              <th>Password</th>
+              <th>Signature</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for voter in voters %}
+            <tr>
+                <td>{{ voter.username}}</td>
+                <td>{{ voter}} </td>
+                {% if voter.college %}
+                <td>{{ voter.college }}</td>
+                {% else %}
+                <td> None </td>
+                {% endif %}
+
+                <td>{{ voter.print_password }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn-lg btn-simple" data-dismiss="modal">Cancel</button>
+        <a href="{% url 'print_passwords' %}" class="btn-lg btn-success">Download</a>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Add College Modal-->
+<div class="modal fade" id="add_college">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header  border-width-4 border-color-seconday align-items-center pb-2">
+          <h3 class="modal-title">ADD COLLEGE</h3>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="forme form-horizontal" method="post" action="{% url 'college' %}">
+            {% csrf_token %}
+            <div class="container mb-4">
+              <p>
+               
+                <input type="text" name="name" class="form-control" required id="id_college_name" placeholder="College Name"> 
+              </p>
+              <p>
+  
+                <input type="text" name="initials" class="form-control" required id="id_college_initials" placeholder="Initials">
+              </p>
+            </div>
+            
+            <div class="modal-footer justify-content-center">
+              <button type="button" class="btn-lg btn-simple" data-dismiss="modal">Cancel</button>
+              <button class="btn-lg btn-success" type="submit">ADD
+              </button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update College -->
+<div class="modal fade" id="update">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title"> Update College </h3>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="forme form-horizontal" method="post" action="{% url 'update_college' %}">
+          <input type="hidden" class="college_id" name="college_id">
+          {% csrf_token %}
+          <div class="container mb-4">
+            <p>
+              <label >Name:</label>
+              <input type="text" name="name" class="form-control" id="edit_collegename">
+            </p>
+
+            <p>
+              <label >Initials</label>
+              <input type="text" name="initials" class="form-control" id="edit_collegeinitials">
+            </p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn-lg btn-simple" data-dismiss="modal">Cancel</button>
+            <button class="btn-lg btn-success" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete College-->
+<div class="modal fade" id="erase">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header align-items-center pb-2">
+        <h3 class="modal-title"></h3>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="forme form-horizontal" method="post" action="{% url 'delete_college' %}">
+          {% csrf_token %}
+          <input type="hidden" class="college_id" name="college_id">
+          <div class="text-center">
+              <p>DELETE COLLEGE</p>
+              <h2 class="bold name"></h2>
+          </div>
+          <div class="modal-footer justify-content-center">
+              <button type="button" class="btn-lg btn-simple" data-dismiss="modal">Cancel</button>
+              <button class="btn-lg btn-danger" type="submit">Confirm
+              </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="delete_all_college">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title"> </h3>
+        <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <h4 class="text-bold">All Colleges will be deleted.</h4>
+          <p>Please click "Confirm" to delete.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <a type="button" class="btn-lg btn-simple close" data-dismiss="modal">Cancel</a>
+          <a href="{% url 'delete_all_college' %}" type="submit" class="btn-lg btn-danger">Confirm</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal %}
+
+{% block javascripts %}
+
+<script>
+  $(function() {
+    $(document).on("click", ".edit", function(e) {
+      e.preventDefault();
+      $("#edit").modal("show");
+      var voter_id = $(this).data("id");
+      getVoterRow(voter_id);
+    });
+  
+    $(document).on("click", ".delete", function(e) {
+      e.preventDefault();
+      $("#delete").modal("show");
+      var voter_id = $(this).data("id");
+      getVoterRow(voter_id);
+    });
+  
+    $(document).on("click", ".update", function(e) {
+      e.preventDefault();
+      $("#update").modal("show");
+      var college_id = $(this).data("id");
+      getCollegeRow(college_id);
+    });
+  
+    $(document).on("click", ".erase", function(e) {
+      e.preventDefault();
+      $("#erase").modal("show");
+      var college_id = $(this).data("id");
+      getCollegeRow(college_id);
+    });
+  });
+  
+  function getVoterRow(voter_id) {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'view_voter' %}",
+      data: {
+        voter_id: voter_id
+      },
+      dataType: "json",
+      success: function(response) {
+        $(".voter_id").val(voter_id),
+        $("#edit_studentid").val(response.username);
+        $("#edit_firstname").val(response.first_name);
+        $("#edit_lastname").val(response.last_name);
+        $("#edit_middlename").val(response.middle_name);
+        $("#edit_print_password").val(response.print_password);
+        $.ajax({
+          type: "GET",
+          url: "{% url 'get_colleges' %}",
+          dataType: "json",
+          success: function(colleges) {
+            $("#edit_college").empty();
+            $.each(colleges, function(index, college) {
+              var option = $("<option></option>")
+                .attr("value", college.id)
+                .text(college.name);
+              if (college.id === response.college) {
+                option.attr("selected", "selected");
+              }
+              $("#edit_college").append(option);
+            });
+          }
+        });
+
+
+        $("#edit_password").val(response.password);
+        $(".fullname").html(response.first_name + " " + response.last_name);
+      },
+    });
+  }
+  
+  function getCollegeRow(college_id) {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'view_college' %}",
+      data: {
+        college_id: college_id
+      },
+      dataType: "json",
+      success: function(response) {
+        // Update college fields here
+        $(".college_id").val(college_id),
+        $("#edit_collegename").val(response.name);
+        $("#edit_collegeinitials").val(response.initials);
+        $(".name").html(response.name);
+      },
+    });
+  }
+</script>
+
+<script>
+  function generatePassword(length) {
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let password = "";
+      for (let i = 0; i < length; i++) {
+          password += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      return password;
+  }
+
+  document.getElementById("generate").addEventListener("click", function(event) {
+ 
+    var password = generatePassword(12);
+
+    document.getElementById("edit_password").value = password;
+    document.getElementById("print_password").value = password;
+
+ 
+    event.preventDefault();
+  });
+
+  document.getElementById("toggle_password").addEventListener("click", function() {
+
+    var input = document.getElementById("edit_password");
+    if (input.type === "password") {
+      input.type = "text";
+    } else {
+      input.type = "password";
+    }
+  });
+</script>
+
+<script>
+  const toggle_password = document.querySelector('#toggle_password')
+  const password_input = document.querySelector('.password')
+
+  toggle_password.addEventListener('click', function() {
+    if (password_input.type == 'password') {
+      password_input.type = 'text';
+      toggle_password.innerHTML = '<i class = "fas fa-eye"></i>';
+
+    } else {
+      password_input.type = 'password';
+      toggle_password.innerHTML = '<i class = "fas fa-eye-slash"></i>';
+    }
+  });
+</script>
+
+
+
+<script>
+  document.getElementById('csv').addEventListener('change', function() {
+    var fileName = this.value.split('\\').pop();
+    document.getElementById('csv_file').innerHTML = "Selected file: " + fileName;
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    $('csv_file_submit_btn').on('click', function(){
+      $('#csv_upload_form').submit();
+    });
+  });
+</script>
+
+
+
+
+
+{% endblock javascripts %}

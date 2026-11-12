@@ -1,0 +1,80 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}
+
+{% endblock title %}
+
+{% block content %}
+<section class="content">
+  <div class="row justify-content-center" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out">
+    <div class="container ml-5 mr-5">
+      <div class=" card shadow p-5  text-center mb-3">
+        <h1 class="page-header text-center title">{{ TITLE }}</h1>
+          <hr>
+        <h2 class = "mb-10">You have already voted for this election.</h2>
+          <div class="mt-5">
+            <a href="#view" data-toggle="modal" class="btn-success btn-lg" type="button">
+              View Ballot
+            </a>
+            <a href="#out" data-toggle="modal" class="btn-danger btn-lg" type="button">
+              Logout
+            </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+{% endblock content %}
+
+{% block modal %}
+
+<div class="modal fade" id="view">
+  <div class="modal-dialog" data-aos-duration="1500" data-aos="fade-up" data-aos-easing="ease-in-out" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">{{TITLE}} Receipt</h3>
+        <button class="close" type="" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+              {% for position in positions %}
+                <div class="card shadow">
+                  <div class="card-header text-center">
+                    <h2 class="h2 mb-0">{{  position.name }}</h2>
+                    <hr>
+                  </div>         
+                    <div class="card-body">
+                      {% if candidates|length == 0 %}
+                        <p class="text-center">No Candidates.</p>
+                      {% else %}
+                        {% for candidate in candidates %}
+                          {% if candidate.position == position %}
+                            {% if candidate.fullname in my_votes %}
+                              <p class="text-center bg-success">
+                                {{ candidate.fullname }}
+                              </p>
+                            {% else %}
+                              <p class="text-center">
+                                {{candidate.fullname}}
+                              </p>
+                            {% endif %}
+                          {% else %}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                  </div>
+           {% endfor %}
+              
+          <div class="modal-footer justify-content-center">
+            <button data-dismiss="modal" type="button" class="btn-lg btn-simple">Close</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal %}

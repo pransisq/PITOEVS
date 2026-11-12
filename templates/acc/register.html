@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76">
+  <link rel="icon" href="{% static 'assets/img/landingpage/favicon.ico' %}">
+
+  <title>E-Cast | {{ page_title }}</title>
+  
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="https://appsrv1-147a1.kxcdn.com/black-dashboard-pro-v1.1.2/css/nucleo-icons.css" rel="stylesheet"/>
+
+
+  <link href="{% static 'css/black.css' %}" rel="stylesheet"/>
+
+    
+  <link rel="stylesheet" href="{% static 'css/black.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/nucleo-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/theme-switcher.css' %}">
+
+
+  <style>
+    .login-page {
+      background: url("{% static 'img/PIT/pit-bg-ideas.png' %}") center/cover;
+      background-attachment: fixed;
+    }
+
+    .white-content .login-page {
+      background: url("{% static 'img/PIT/pit-bg-ideas.png' %}") center/cover;
+      background-attachment: fixed;
+    }
+
+    
+    
+  </style>
+</head> 
+<body class="login-page">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent fixed-top" style="top: 0px; transition: 0.5s linear;">
+    <div class="container-fluid">
+      <div class="navbar-wrapper">
+        <div class="navbar-toggle d-inline">
+          <button type="button" class="navbar-toggler">
+            <span class="navbar-toggler-bar bar1"></span>
+            <span class="navbar-toggler-bar bar2"></span>
+            <span class="navbar-toggler-bar bar3"></span>
+          </button>
+        </div>
+        <a class="navbar-brand text-light" href="{% url 'login' %}"><h1>E-Cast</h1></a>
+      </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-bar navbar-kebab"></span>
+        <span class="navbar-toggler-bar navbar-kebab"></span>
+        <span class="navbar-toggler-bar navbar-kebab"></span>
+      </button>
+    </div>
+  </nav>
+
+    
+    <div class="warpper-full-page">
+      <div class="full-page login-page">
+      <div class="content bg-transparent">
+        <div class="container my-auto">
+          <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+
+              <div class="card card-login card-white text-dark" data-aos="fade-up" data-aos-duration="1500" data-aos-easing="ease-in-out">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div class="bg-gradient-custom shadow-success border-radius-5 py-3 pe-1">
+                    <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">PIT</h4>
+                    <div class="row mt-3">
+                      <div class="col-2 text-center ms-auto">
+                       
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <form role="form" method="post" class="form-horizontal">
+                    {% csrf_token %}
+
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="tim-icons icon-single-02"></i>
+                        </div>
+                      </div>
+                      <input type="text" name="username" placeholder="ID Number" class="form-control" required id="id_username">
+                    </div>
+
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="tim-icons icon-lock-circle"></i>
+                        </div>
+                      </div>
+                      <input type="password" name="password" placeholder="Password" class="form-control" required id="id_password">
+                    </div>
+                    <div class="text-center">
+                        <h6>
+                          <a class="text-dark">  Note: <strong> Password is case sensitive.</strong>
+                          </a>
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                      <button type="submit" name="login" class="btn btn-success btn-lg btn-block mb-3">LOG IN</button>
+                      <div class="pull-left">
+                        <h6>
+                          <a href="{% url 'register' %}" class=" text-dark link footer-link">Create Account</a>
+                        </h6>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+       <footer class="footer">
+        <div class="row">
+          <div class="col-sm-6 align-content-center">
+            <a class="text-lg text-light mr-2">
+              &copy; Paul Francis D. Panal, Jasper Leonil Odita, and Charwen James Perez. All rights reserved.
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <a href="https://www.creative-tim.com/product/black-dashboard-django" class="copyright">
+              <img src="/static/img/img/light.png" alt="logo" class="" height="120">
+            </a>
+          </div>
+        </div>
+      </footer>
+
+
+
+  
+  
+      {% include 'includes/scripts.html' %}
+
+
+
+
+
+</body>
+</html>

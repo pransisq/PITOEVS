@@ -1,0 +1,388 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock title %} 
+
+{% block content %}
+<div class="content">
+  <hr>
+  <div class="row">
+    <div class="container-fluid">
+      <div class="d-flex mb-2 justify-content-center align-items-center">
+        <div class="ml-auto dropdown">
+          <button class="btn-lg btn-simple" data-toggle="modal" data-target="#results"> Election Result</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" data-aos="fade-up" data-aos-duration="1500" data-aos-easing="ease-in-out">
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="card card-stats">
+        <div class="card-body">
+            <div class="row">
+              <div class="col-5">
+                <div class="info-icon icon-success">
+                  <i class="tim-icons icon-single-02"></i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers text-center">
+                    <p class="card-category">VOTERS</p>
+                    <h3 class="card-title" id="voters_count"></h3>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <hr>
+            <div class="stats">
+              <i class="tim-icons icon-caps-small"></i> "Total Number Of Voters"
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="card card-stats">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-5">
+                      <div class="info-icon icon-success">
+                          <i class="tim-icons icon-atom"></i>
+                      </div>
+                  </div>
+                  <div class="col-7">
+                      <div class="numbers text-center">
+                          <p class="card-category">CANDIDATES</p>
+                          <h3 class="card-title" id="candidate_count"></h3>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="card-footer text-center">
+              <hr>
+              <div class="stats">
+                <i class="tim-icons icon-caps-small"></i> "Total Number of Candidates"
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-2">
+      <div class="card card-stats">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-5">
+                      <div class="info-icon icon-success">
+                          <i class="tim-icons icon-molecule-40"></i>
+                      </div>
+                  </div>
+                  <div class="col-7">
+                      <div class="numbers text-center">
+                          <p class="card-category">POSITIONS</p>
+                          <h3 class="card-title" id="position_count"></h3>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="card-footer text-center">
+              <hr>
+              <div class="stats">
+                <i class="tim-icons icon-caps-small"></i> "Total Number of Positions"
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-2 ">
+      <div class="card card-stats">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-5">
+              <div class="info-icon icon-success">
+                <i class="tim-icons icon-support-17"></i>
+              </div>
+            </div>
+            <div class="col-7">
+                <div class="numbers text-center">
+                  <p class="card-category">VOTES</p>
+                  <h3 class="card-title" id="voted_voters_count"></h3>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-center">
+          <hr>
+          <div class="stats">
+            <i class="tim-icons icon-caps-small "></i>"Total Number of Voters Voted"
+          </div>      
+        </div>
+      </div>
+    </div>
+
+    
+     
+    {% for position in positions %}
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h3 class="card-title">{{ position.name }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="{{ position.name|slugify }}"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>  
+</div>
+{% endblock content %}
+
+{% block modal %}
+<!--Results-->
+<div class="modal fade" id="results">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header border-bottom border-width-4 border-color-secondary pb-2">
+            <h3 class="modal-title"> {{ TITLE }} Results Preview </h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">x</span>
+              </button>
+          </div>
+          <hr>
+          <div class="modal-body pt-0">
+              {% for position, data in position_data.items %}
+              <table class="mb-5 table">
+                <thead>
+                  <tr class="text-center">
+                    <th class="text-center" colspan="3">
+                            {{ position }} | max winners : {{ data.max_vote }}
+                    </th>
+                  </tr>
+                </thead>
+                <tr>
+                  <th>Candidate Name</th>
+                  <th class="text-center">Total Votes Recorded</th>
+                </tr>
+                {% for candidate in data.candidate_data %}
+                <tbody>
+                <tr>
+                  <th>
+                    {{ candidate.name }}
+                  </th>
+                  <th class="text-center">
+                    {{ candidate.votes }}
+                  </th>
+                </tr>
+                {% empty %}
+                <tr>
+                  <th class="text-center" colspan="3">No Candidates Vying For This Position</th>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <th class="text-center" colspan="3"> {{ data.winner|safe}} </th>
+                </tr>
+                
+              </tbody>
+              </table>
+              {% endfor %}
+              <div class="modal-footer justify-content-center">
+                <a href="{% url 'print_results' %}" class="btn-lg btn-success"> Download</a>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block javascripts %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+<script>
+  $(function() {
+    var charts = {};
+    {% for key, value in chart_data.items %}
+      var rowid = '{{ value.pos_id }}';
+      var description = '{{ key|safe|slugify }}';
+      charts[description] = {
+        candidates: {{ value.candidates|safe }},
+        votes: {{ value.votes|safe }}
+      };
+      createChart(description, charts[description].candidates, charts[description].votes);
+    {% endfor %}
+
+    function createChart(chartId, candidates, votes) {
+      const ctx = document.getElementById(chartId).getContext('2d');
+
+      var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+      gradientStroke.addColorStop(1, 'rgba(93, 234, 208, 0.81)');
+      gradientStroke.addColorStop(0.4, 'rgba(117, 248, 224, 0.5)'); 
+      gradientStroke.addColorStop(0, 'rgba(171, 245, 231, 1)'); 
+
+      new Chart(ctx, {
+        
+        type: 'bar',
+        
+        legend: {
+          display: false
+        },
+        data: {
+          labels: candidates,
+          datasets: [{
+            
+            fill: true,
+            data: votes,
+            backgroundColor: gradientStroke,
+            borderColor: '#00d6b4',
+            borderWidth: 0.05,
+            borderRadius: 40,
+            borderDash: [],
+            borderDashOffset: 0.1,
+            pointBackgroundColor: '#1d2020',
+            pointBorderColor:'rgba(255,255,255,0)',
+            pointHoverBackgroundColor:'#00d6b4',
+            pointBorderWidth: 0.1,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 1,
+            pointRadius: 1,
+
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          tooltips: {
+            backgroundColor: '#f5f5f5',
+            titleFontColor: '#333',
+            bodyFontColor: '#666',
+            bodySpacing: 4,
+            xPadding: 12,
+            mode: "nearest",
+            intersect: 0,
+            position: "nearest"
+          },
+          responsive: true,
+          indexAxis: 'y',
+        
+          scales: {
+            yAxes:[{
+                barPercentage: 0.4,
+                categoryPercentage: 0.5,
+                display: true,
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    font: {
+                        size: 16,
+                        family: 'Poppins',
+                    },
+                    align: 'center',
+                    stepSize: 10,
+                    min: 0,
+                    beginAtZero: true,
+                    padding: 10,
+                },
+                tickRotation: 45,
+            }],
+
+            xAxes: {
+              display: false,
+              grid: {
+                display: true,
+                borderColor: 'rgba(200, 200, 200, 0.2)', 
+                borderWidth: 1
+              },
+              ticks: {
+                font: {
+                  size: 16,
+                  family: 'Poppins',
+                  weight: 'bold'
+                },
+                align: 'center',
+                padding: 10,
+              },
+              tickRotation: 45,
+            }
+          },
+          legend: {
+            display: false
+          },
+          plugins: {
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'center',
+              font: {
+                size: 14,
+                family: 'Poppins',
+                weight: 'bold'
+              },
+              formatter: function(value) {
+                return value + 'otes';
+              }
+            }
+          },
+          animation: {
+            duration: 2000, 
+            easing: 'easeInOutQuart' 
+          },
+          hover: {
+            animationDuration: 200 
+          }
+        }
+      });
+    }
+    setInterval(function() {
+      $.ajax({
+        url: "{% url 'chart_data' %}",
+        dataType: 'json',
+        success: function(data) {
+          $.each(data, function(key, value) {
+            var description = '{{ key|safe|slugify }}';
+            if (charts[description]) {
+              charts[description].candidates = value.candidates;
+              charts[description].votes = value.votes;
+              var ctx = $('#' + description).get(0).getContext('2d');
+              ctx.canvas.parentNode.removeChild(ctx.canvas);
+              createChart(description, charts[description].candidates, charts[description].votes);
+            }
+          });
+        }
+      });
+    }, 5000);
+  });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        function updateData() {
+            $.ajax({
+                url: "{% url 'dashboard_data' %}",
+                dataType: 'json',
+                success: function(data) {
+                    $('#candidate_count').text(data.candidate_count);
+                    $('#voters_count').text(data.voters_count);
+                    $('#voted_voters_count').text(data.voted_voters_count);
+                    $('#position_count').text(data.position_count);
+                },
+            });
+        }
+        setInterval(updateData, 5000);
+        updateData();
+    });
+</script>
+
+{% endblock javascripts %}
+
+
+

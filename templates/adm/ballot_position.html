@@ -1,0 +1,157 @@
+{% extends  "layouts/base.html" %}
+
+{% block title %}
+    Ballot Position
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block content %}
+<div class="content">
+  <hr>
+  <div class="row">
+    <div class="container-fluid">
+      <div class="d-flex mb-2 justify-content-center align-items-center">
+        <div class="col-md-6 col-sm-12">
+          <ol class="breadcrumb bg-transparent">
+            <li class="breadcrumb-item">
+              <a class="text text-success" href="{% url 'admin_dashboard' %}">Home</a>
+            </li>
+            <li class="breadcrumb-item active">
+              <a class="text-default" href="">Ballot</a>
+            </li>
+          </ol>
+        </div>
+        <div class="ml-auto">
+          <button class="btn-lg btn-simple" data-toggle="modal" data-target="#elec_title">Configure Title</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="container text-center" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out">
+      <h3 class="text-bold">{{TITLE}}</h3>
+      <div class="container" id="content"></div>
+    </div>
+  </div>
+
+</div>
+{% endblock content %}
+
+{% block modal %} 
+
+<!-- Reset -->
+<div class="modal fade" id="reset_cur_election">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header border-bottom border-width-3 border-color-secondary align-items-center pb-2">
+              <h3 class="modal-title">Reset Election</h3>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">x</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <h5>Select "Confirm" below if you want to reset the current count of votes of the current election.</h5>
+          <div class="modal-footer justify-content-center">
+              <a class="btn-lg btn-simple" type="button" data-dismiss="modal">Cancel</a>
+              <a class="btn-lg btn-danger" href="{% url 'reset_votes' %}">Confirm</a>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="elec_title">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-bottom border-width-4 border-color-secondary align-items-center pb-2">
+                <h3 class="modal-title">CONFIGURE TITLE</h3>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'ballot_title'  %}">
+                  {% csrf_token %}
+                    <div class="form-group has-feedback mb-4">
+                        <label for="" class="control-label">Title</label>
+                        <input type="text" class = "form-control" id-unique = "title" name = "title" value = "{{TITLE}}">
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn-lg btn-simple" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                        <button type="submit" class="btn-lg btn-success" name="save"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block javascripts %}
+ 
+<script>
+  $(function(){
+    fetch();
+  
+    $(document).on('click', '.reset', function(e){
+      e.preventDefault();
+      var desc = $(this).data('desc');
+      $('.'+desc).iCheck('uncheck');
+    });
+  
+    $(document).on('click', '.moveup', function(e){
+      e.preventDefault();
+      var id = $(this).data('id');
+      $('#'+id).animate({
+        'marginTop' : "-300px"
+      });
+      $.ajax({
+        type: 'GET',
+        url: '{% url "update_ballot_position" 1 "up" %}'.replace(1, id),
+        dataType: 'json',
+        success: function(response){
+          if(!response.error){
+            fetch();
+          }
+        }
+      });
+    });
+  
+    $(document).on('click', '.movedown', function(e){
+      e.preventDefault();
+      var id = $(this).data('id');
+      $('#'+id).animate({
+        'marginTop' : "+300px"
+      });
+      $.ajax({
+        type: 'GET',
+        url:  '{% url "update_ballot_position" 1 "down" %}'.replace(1, id),
+        dataType: 'json',
+        success: function(response){
+          if(!response.error){
+            fetch();
+          }
+        }
+      });
+    });
+  
+  });
+  
+  function fetch(){
+    $.ajax({
+      type: 'GET',
+      url: '{% url "fetch_ballot" %}',
+      dataType: 'json',
+      success: function(response){
+        $('#content').html(response).iCheck({checkboxClass: 'icheckbox_flat-green',radioClass: 'iradio_flat-green'});
+      }
+    });
+  }
+  </script>
+
+{% endblock javascripts %}

@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="apple-touch-icon" sizes="76x76" src="{% static 'img/landingpage/favicon.ico' %}"/>
+    <link rel="icon"type="image/png" href="{% static 'img/landingpage/favicon.ico' %}"/>
+    <title>E-Cast | {{ page_title }}</title>
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"/>
+    <!-- Nucleo Icons -->
+    <link href="https://appsrv1-147a1.kxcdn.com/black-dashboard-pro-v1.1.2/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="{% static 'css/black.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/aos.css' %}" rel="stylesheet" />
+
+
+    <style>
+      .login-page {
+        background: url("{% static 'img/accounts/pit-bg.png' %}") center/cover;
+        background-attachment: fixed;
+      }
+
+    </style>
+  </head>
+  <body class="login-page">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="100" id="navbar">
+      <div class="container position-sticky z-index-1 top-0 p-2 rounded-lg border-gray border bg-white">
+        <div class="navbar-translate">
+          <a class="navbar-brand" href="{% url 'landingpage' %}">
+            <img src="{% static 'img/accounts/pit-label.png' %}" class="img-fluid" alt="logo" height="50%" width="70%">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar bar1"></span> 
+            <span class="navbar-toggler-bar bar2"></span>
+            <span class="navbar-toggler-bar bar3"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navigation">
+          <div class="navbar-collapse-header">
+            <div class="row">
+            <div class="col-6 collapse-brand">
+            </div>
+            <div class="col-6 collapse-close text-right">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+            </div>
+          </div>
+           
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="wrapper-full-page">
+      <div class="full-page login-page">
+        <div class="content bg-transparent">
+          <div class="container my-auto">
+            <div class="col-lg-4 col-md-6 ml-auto mr-auto" data-aos-delay="600" data-aos="fade-up" data-aos-duration="900" data-aos-easing="ease-in-out">
+              <div class="card card-login card-white text-dark">
+                <div
+                  class="card-header p-0 position-relative mt-n4 mx-3 z-index-2"
+                >
+                  <div
+                    class="bg-gradient-primary shadow-primary border-radius-5 py-3 pe-1"
+                  >
+                    <h4
+                      class="text-white font-weight-bolder text-center mt-2 mb-0"
+                    >
+                      LOGIN
+                    </h4>
+                    <div class="row mt-3">
+                      <div class="col-2 text-center ms-auto">
+                        <div class="btn btn-link"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <form role="form" method="post" action="">
+                    {% csrf_token %}
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="tim-icons icon-single-02"></i>
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        name="username"
+                        placeholder="ID Number"
+                        class="form-control"
+                        required
+                        id="id_username"
+                      />
+                    </div>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="tim-icons icon-lock-circle"></i>
+                        </div>
+                      </div>
+                      <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        class="form-control"
+                        required
+                        id="id_password"
+                      />
+                    </div>
+                    <div class="text-center">
+                      <h6>
+                        <a href="" class="text-default">
+                          Note: <strong> Password is case sensitive.</strong>
+                        </a>
+                      </h6>
+                    </div>
+                    <div class="card-footer">
+                      <button
+                        type="submit"
+                        name="login"
+                        class="btn btn-primary btn-lg btn-block mb-3"
+                      >
+                        LOG IN
+                      </button>
+                      
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include 'includes/scripts.html' %}
+  </body>
+</html>

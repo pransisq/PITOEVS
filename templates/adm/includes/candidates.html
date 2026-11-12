@@ -1,0 +1,172 @@
+{% load static %}
+<!-- Add Candidate -->
+<div class="modal fade" id="add_candidate">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-bottom border-width-4 border-color-secondary align-items-center pb-2 ">
+                <h3 class="modal-title">Add New Candidate</h3>
+                <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="add_candidate forme" enctype="multipart/form-data" method="post" action="{% url 'add_candidate' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="card card-user">
+                                <div class="card-body">
+                                <div class="card-text">
+                                    <div class="author">
+                                        <div class="block block-one"></div>
+                                        <div class="block block-two"></div>
+                                        <div class="block block-three"></div>
+                                        <a>
+                                            <img src="{% static 'img/defaults/default_photo.jpg' %}" alt="candidate photo" class="avatar" id="candidate-photo" height="" width="">
+                                        </a>
+                                        <div class="btn btn-lg btn-success btn-simple btn-pic">Upload</div>
+                                        <input type="file" name="photo" id="photo-input" style="display: none;"> 
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            {% for field in candidate_form  %}
+                            <div class="form-group has-feedback">
+                                <span class="text-danger">{{field.errors}}</span>
+                                {{field.label_tag}}
+                                    {{field}}
+                            </div>
+                            {% endfor %} 
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+                        <button class="btn-lg btn-success" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Candidate -->
+<div class="modal fade" id="edit_candidate">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header border-bottom border-width-4 border-color-secondary align-items-center pb-2 ">
+                <h3 class="modal-title"> Update Candidate </h3>
+                <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="forme form-horizontal" enctype="multipart/form-data" method="post" action="{% url 'update_candidate' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="candidate_id" name="candidate_id" id="candidate_id">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="card card-user">
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        <div class="author">
+                                            <div class="block block-one"></div>
+                                            <div class="block block-two"></div>
+                                            <div class="block block-three"></div>
+                                            <a>
+                                                <img src="#" alt="" class="avatar" id="up-candidate-photo">
+                                            </a>
+                                            <div class="btn btn-lg btn-success btn-simple up-btn-pic">Upload</div>
+                                            <input type="file" name="photo" id="up-photo-input" style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+
+                            <div class="form-group has-feedback">
+                                <span class="text-danger"></span>
+                                <label for="">Party list:</label>
+                                <select name="party_list" class="form-control" id="candidate_party">
+                                    <option value="" selected></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group has-feedback">
+                                <span class="text-danger"></span>
+                                <label for="">Fullname:</label>
+                                <input type="text" name="fullname" maxlength="100" class="form-control" id="edit_candidate_fullname">
+                            </div>
+                            <div class="form-group has-feedback">
+                                <span class="text-danger"></span>
+                                <label for="">Position:</label>
+                                <select name="position" class="form-control" id="candidate_position">
+                                    <option value="" selected>None</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+                        <button class="btn-lg btn-success" type="submit">Submit</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete -->
+<div class="modal fade" id="delete_candidate">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header align-items-center pb-2 ">
+                <h3 class="modal-title"></h3>
+                <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="forme form-horizontal" method="post" action="{% url 'delete_candidate' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="candidate_id" name="candidate_id" id="candidate_id">
+                    <div class="text-center">
+                            <p>DELETE CANDIDATE</p>
+                            <h2 class="bold candidate_fullname"></h2>
+                    </div>
+                    <div class="modal-footer justify-content-center border-top-none">
+                        <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+                        <button class="btn-lg btn-danger" type="submit"> Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete All Candidates -->
+<div class="modal fade" id="delete_candidates">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header align-items-center pb-2 ">
+                <h3 class="modal-title"></h3>
+                <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <h4 class="text-bold">All Candidates will be deleted.</h4>
+                    <p>Please click "Confirm" to delete.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-top-none">
+                    <a type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</a>
+                    <a href="{% url 'delete_all_candidates' %}" type="submit" class="btn-lg btn-danger">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

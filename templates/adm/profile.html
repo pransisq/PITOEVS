@@ -1,0 +1,245 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %} Profile {% endblock title %} 
+{% block content %}
+<div class="content">
+  <hr>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <ol class="breadcrumb bg-transparent">
+        <li class="breadcrumb-item">
+          <a class="text text-success" href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="text text-success">Profile</a>
+        </li>
+        <li class="breadcrumb-item active">
+          <a class="text-light" href="">{{ request.user }}</a>
+        </li>
+      </ol>
+    </div>
+      <div class="col-md-8">
+        <div class="card" data-aos="fade-up" data-aos-duration="2000" data-aos-easing="ease-in-out">
+            <div class="card-header">
+                <h3 class="title text-bold">General Information</h3>
+            </div>
+            <div class="card-body">
+              <form method="post" class="form-horizontal">
+              {% csrf_token %}
+
+                <div class="row">
+                  <div class="col-md-5 pr-md-1">
+                      <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" name="company" id="company" class="form-control" placeholder="Company" value="{{request.user.company}}">
+                      </div>
+                  </div>
+                  <div class="col-md-3 px-md-1">
+                      <div class="form-group">
+                        <label>Username</label>
+                          <input type="text" name="username" class="form-control" value="{{request.user.username}}">
+                      </div>
+                  </div>
+                  <div class="col-md-4 pl-md-1">
+                      <div class="form-group">
+                        <label>Email address</label>
+                          <input type="email" name="email" class="form-control" value="{{request.user.email}}" >
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-5 pr-md-1">
+                      <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" name="first_name" class="form-control" value="{{request.user.first_name}}">
+                      </div>
+                  </div>
+                  <div class="col-md-3 px-md-1">
+                      <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" name="last_name" class="form-control" value="{{request.user.last_name}}">
+                      </div>
+                  </div>
+                  <div class="col-md-4 pl-md-1">
+                      <div class="form-group">
+                      <label>Middle Name</label>
+                      <input type="text" name="middle_name" class="form-control" value="{{request.user.middle_name}}">
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 p-md-3">
+                      <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" name="address" class="form-control" placeholder="Address" value="{{request.user.address}}">
+                      </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="card-footer d-flex justify-content-center">
+                  
+                  <button type="submit" class="btn btn-lg btn-fill btn-primary btn-bordered">Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    <div class="col-md-4" data-aos="fade-up" data-aos-duration="2000" data-aos-easing="ease-in-out">
+    <div class="card card-user">
+      <div class="card-body">
+        <p class="card-text">
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a href="" data-toggle="modal" data-target="#update-user-photo">
+              <img class="avatar" 
+                   src="{{ request.user.photo.url }}" 
+                   alt="{{request.user}}">
+              <h5 class="title">{{ request.user }}</h5>
+            </a>
+            <p class="description">
+                Administrator
+            </p>
+          </div>
+        </p>
+        <div class="d-flex card-description justify-content-center">
+           <button class="btn btn-lg btn-fill btn-success btn-bordered change_pass" data-toggle="modal" data-target="#change_pass" data-id="{{request.user.id}}">Change Password</button>
+        </div>
+      </div>
+        <div class="card-footer">
+          <div class="button-container">
+            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
+              <i class="fab fa-facebook"></i>
+            </button>
+            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+              <i class="fab fa-google-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block modal %}
+<!--Change Pass Modal-->
+<div class="modal fade" id="change_pass" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title">Change Password</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <form method="post" action="{% url 'update_admin_password' %}">
+        {% csrf_token %}
+        <input type="hidden" class="id" name="id">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+            <div class="form-group">
+              <label>Old Password</label>
+              <input type="password" class="form-control" id="old_password"  name="old_password" placeholder="Enter old password"/>
+            </div>
+          </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 pr-md-1">
+                <div class="form-group">
+                <label>New Password</label>
+                <input type="Password" name="new_password" id="new_password" class="form-control" placeholder="Enter new password">
+                </div>
+            </div>
+            <div class="col-md-6 px-md-1">
+                <div class="form-group">
+                <label>Password Confirmation</label>
+                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password">
+                </div>
+            </div>
+          </div>
+      
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-lg btn-success">Update</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="update-user-photo" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom border-width-4 border-color-secondary align-items-center pb-2">
+        <h3 class="modal-title">Update Profile Photo</h3>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'update_admin_photo' %}" method="post" enctype="multipart/form-data" class="forme form-horizontal">
+          {% csrf_token %}
+          <div class="row justify-content-center">
+            <div class="col-md-7">
+              <div class="card card-user">
+                <div class="card-body">
+                  <div class="card-text">
+                    <div class="author">
+                      <div class="block block-one"></div>
+                      <div class="block block-two"></div>
+                      <div class="block block-three"></div>
+                      <a>
+                        <img src="
+                                        {{ request.user.photo.url }}
+                                 "
+                                
+                             alt="{{ request.user }}" class="avatar" id="user-photo">
+                      </a>
+                      <div class="btn btn-lg btn-success btn-simple btn-pic">Upload</div>
+                      <input type="file" name="photo" id="photo-input" class="d-none">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn-lg btn-simple clos" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn-lg btn-success">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal %}
+
+{% block javascripts %}
+
+<script>
+      $('.btn-pic').on('click', function() {
+      $('#photo-input').trigger('click');
+    });
+    
+    $('#photo-input').on('change', function() {
+      var file = this.files[0];
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#user-photo').attr('src', e.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+</script>
+
+{% endblock javascripts %}

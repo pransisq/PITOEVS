@@ -1,0 +1,77 @@
+{% load static %}
+
+<!--   Core JS Files   -->
+<script src="{% static 'js/core/jquery.min.js' %}"></script>
+<script src="{% static 'js/core/popper.min.js' %}"></script>
+
+<script src="{% static 'js/plugins/datatables.min.js' %}"></script>
+<script src="{% static 'js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'js/plugins/bootstrap-notify.js' %}"></script>
+
+
+<script src="{% static 'js/black-dashboard.js' %}"></script>
+<script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/icheck@1.0.2/icheck.min.js"></script>
+
+<script src="{% static 'js/sweetify.js' %}"></script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="{% static 'js/aos.js' %}"></script>
+
+<script>
+  AOS.init();
+</script>
+
+<script>
+  $(document).ready(function () {
+    $(".data-table").DataTable({
+      pagingType: "full_numbers",
+      lengthChange: false,
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search records"
+      
+      },
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $(".datatable-no-search").DataTable({
+      pagingType: "full_numbers",
+      lengthChange: false,
+      searching: false,
+      info: ""
+    });
+  });
+</script>
+
+<script>
+  const forms = document.querySelectorAll('.forme');
+
+  forms.forEach(form => {
+    form.addEventListener('submit', (e) =>{
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin "></i> Processing';
+      document.body.style.pointerEvents = 'none';
+
+      const closeElements = document.querySelectorAll('.clos');
+      closeElements.forEach(element => {
+        element.style.pointerEvents = 'none';
+      });
+
+    });
+  });
+</script>
+
+
+{% load sweetify %}
+
+{% sweetify %}
+

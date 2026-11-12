@@ -1,0 +1,449 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="content">
+  <hr>
+  <div class="row" data-aos="fade-up" data-aos-duration="1500" data-aos-easing="ease-in-out">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header ">
+          <h3 class="card-title d-inline">Candidates</h3> 
+          <div class="dropdown float-right">
+            <button type="button" class="btn btn-link btn-icon" data-toggle="dropdown">
+              <i class="tim-icons icon-settings-gear-63"></i>
+            </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" data-toggle="modal" data-target="#add_candidate">Add Candidate</a>
+                  <a class="dropdown-item" data-toggle="modal" data-target="#delete_candidates">Delete all Candidates</a>
+              </div>
+          </div>
+        </div>
+          <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6 text-left">    
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+                        {% for party in parties %}
+                        <label class="btn btn-sm btn-primary btn-simple {% if party.name == 'Independent' %} active {% endif %}" id="{{ party.id }}">
+                            <input type="radio" name="options">
+                            <span class="d-none d-md-block d-lg-block d-xl-block">{{ party.name }}</span>
+                            <span class="d-block d-sm-none">
+                                {{ party.name }}
+                            </span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+              </div>
+              <div class="card shadow p-0 mt-2">
+                {% for party in parties %}
+                <div class="col-md-12 p-0" id="table-{{ party.id }}" >
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive ps">
+                        <table class="table data-table">
+                          <thead>
+                            <tr>
+                              <th class="text-center"> Candidate</th>
+                              <th></th>
+                              <th class="text-center"> Position </th>
+                              <th class="text-center"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% regroup party.candidate_set.all by position as position_list %}
+                            {% for position in position_list %}
+                              {% for candidate in position.list %}
+                              <tr>
+                                <td>
+                                  <div class="photo">
+                                    <img src="
+                                        {{candidate.photo.url}}
+                                    "
+                                         class="avatar" alt="{{candidate}}">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">
+                                      {{ candidate.fullname }}
+                                    </h6>
+                                  </div>
+                                </td>
+                                <td class="text-center">{{ candidate.position }}</td>
+                                <td>
+                                  <div class="dropdown">
+                                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownmenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                      <i class="fas fa-ellipsis"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownmenuButton">
+                                      <div class="d-flex flex-wrap">
+                                        <a class="dropdown-item edit_candidate" data-id="{{ candidate.id }}">Edit</a>
+                                        <a class="dropdown-item delete_candidate" data-id="{{ candidate.id }}">Delete</a>
+                                      </div>
+                                    </div>  
+                                  </div>
+                                </td> 
+                              </tr>   
+                              {% endfor %}
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header ">
+              <h3 class="card-title d-inline">Positions</h3>
+              <div class="dropdown float-right">
+                  <button type="button" class="btn btn-link btn-icon" data-toggle="dropdown">
+                      <i class="tim-icons icon-settings-gear-63"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item"  data-toggle="modal" data-target="#add_position">Add Position</a>
+                      <a class="dropdown-item" data-toggle="modal" data-target="#delete_positions">Delete all Positions</a>
+                  </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table">
+                <table class="table datatable-no-search">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for position in positions %}
+                    <tr>
+                      <td>
+                        
+                          {{ position.name }}
+                        
+                      </td>        
+                      <td class="text-center d-flex justify-content-center">
+                        <div class="dropdown">
+                          <button class="btn btn-link dropdown-toggle" type="button" id="positiondropdownmenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fas fa-ellipsis"></i>
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="positiondropdownmenuButton">
+                            <div class="d-flex flex-wrap">
+                              <a class="dropdown-item edit_position" data-id="{{ position.id }}">Edit</a>
+                              <a class="dropdown-item delete_position" data-id="{{ position.id }}">Delete</a>
+                            </div>
+                          </div>  
+                        </div>
+                      </td> 
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+        <div class="card shadow">
+          <div class="card-header">
+              <h3 class="d-inline card-title">Party Lists</h3>
+              <div class="dropdown float-right">
+                  <button type="button" class="btn btn-link btn-icon" data-toggle="dropdown">
+                      <i class="tim-icons icon-settings-gear-63"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" data-toggle="modal" data-target="#add_party">Add Party List</a>
+                      <a class="dropdown-item" data-toggle="modal" data-target="#delete_parties">Delete all Party List</a>
+                  </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table">
+                  <table class="table datatable-no-search">
+                    <thead>
+                      <th></th>
+                      <th></th>
+                    </thead>
+                    <tbody>
+                        {% for party in parties %}
+                        <tr>
+                            <td>
+                              
+                                {{ party.name }}
+                              
+                            </td>
+                            {% if party.name == 'Independent' %}
+                            <td class="text-center"> N/A</td>
+                            {% else %}
+                            <td class="d-flex justify-content-between">
+                                <a class=" edit_party" data-id="{{ party.id }}">Edit</a>
+                                <a class="text-danger delete_party" data-id="{{ party.id }}">Delete</a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block modal %}
+
+{% include 'adm/includes/candidates.html' %}
+
+{% include 'adm/includes/positions.html' %}
+
+{% include 'adm/includes/party_lists.html' %}
+
+{% endblock modal %}
+ 
+{% block javascripts  %}
+
+  
+<script>
+  $(document).ready(function() {
+    $('input[name="options"]').first().prop('checked', true);
+
+    var firstPartyId = $('input[name="options"]').first().parent().attr('id');
+    $('div[id^="table-"]').hide();
+    $('#table-' + firstPartyId).show();
+
+    
+    $('input[name="options"]').on('change', function() {
+      var partyId = $(this).parent().attr('id');
+      $('div[id^="table-"]').hide();
+      $('#table-' + partyId).show();
+    });
+  });
+</script>
+  
+
+<script>
+
+  $('.btn-pic').on('click', function() {
+    $('#photo-input').trigger('click');
+  });
+
+  $('#photo-input').on('change', function() {
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $('#candidate-photo').attr('src', e.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+
+</script>
+
+<script>
+  $('.up-btn-pic').on('click', function() {
+    $("#up-photo-input").trigger('click');
+  });
+
+  $("#up-photo-input").on('change', function() {
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $("#up-candidate-photo").attr("src", e.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+
+  
+<script>
+  $(function() {
+      $(document).on('click', '.edit_candidate', function(e){
+          e.preventDefault();
+          $('#edit_candidate').modal('show');
+          var candidate_id = $(this).data('id');
+          getCandidateRow(candidate_id);
+      });
+      $(document).on('click', '.delete_candidate', function(e){
+          e.preventDefault();
+          $('#delete_candidate').modal('show');
+          var candidate_id = $(this).data('id');
+          getCandidateRow(candidate_id); 
+      });
+  });
+  function getCandidateRow(candidate_id) {
+      $.ajax({
+          type: 'GET',
+          url: '{% url "view_candidate" %}',
+          data: {
+              candidate_id: candidate_id
+          },
+          dataType: 'json',
+          success: function(response) {
+              
+            $('.candidate_id').val(candidate_id),
+            $('#edit_candidate_fullname').val(response.fullname);
+            $('#up-candidate-photo').attr('src', response.photo_url);
+            $('.candidate_fullname').html(response.fullname);
+            $.ajax({
+              type: "GET",
+              url: "{% url 'get_parties' %}",
+              dataType: "json",
+              success: function(parties) {
+                $("#candidate_party").empty();
+                $.each(parties, function(index, party) {
+                  var option = $("<option></option>")
+                    .attr("value", party.id)
+                    .text(party.name);
+                  if (party.id === response.party_list) {
+                    option.attr("selected", "selected");
+                  }
+                  $("#candidate_party").append(option);
+                });
+              }
+            });
+
+            $.ajax({
+              type: "GET",
+              url: "{% url 'get_positions' %}",
+              dataType: "json",
+              success: function(positions) {
+                $("#candidate_position").empty();
+                $.each(positions, function(index, position) {
+                  var option = $("<option></option>")
+                    .attr("value", position.id)
+                    .text(position.name);
+                  if (position.id === response.position) {
+                    option.attr("selected", "selected");
+                  }
+                  $("#candidate_position").append(option);
+                });
+              }
+            });          
+            $('#candidate_position').val(response.position);
+          },
+          error: function(xhr, status, error){
+              console.log('Error:', error);
+          },
+    });
+  }
+  </script>
+
+  <script>
+    const imgElement = document.querySelector('.candidate-image');
+    const inputElement = document.querySelector('input[name="photo"]');
+  
+    imgElement.addEventListener('load', () => {
+      inputElement.value = imgElement.src;
+    });
+  </script>
+
+  <script>
+    $(function() {
+        $(document).on('click', '.edit_position', function(e) {
+            e.preventDefault();
+            $('#edit_position').modal('show');
+            var position_id = $(this).data('id');
+            getPositionRow(position_id);
+        });
+        $(document).on('click', '.delete_position', function(e) {
+            e.preventDefault();
+            $('#delete_position').modal('show');
+            var position_id = $(this).data('id');
+            getPositionRow(position_id);
+        });
+       
+    });
+    function getPositionRow(position_id) {
+      $.ajax({
+        type: 'GET',
+        url: '{% url "view_position" %}',
+        data: {
+          position_id: position_id
+        },
+        dataType: 'json',
+        success: function(response) {
+          $('.position_id').val(position_id);
+          $('#edit_position_name').val(response.name);
+          $('#edit_max_vote').val(response.max_vote);
+    
+          $.ajax({
+            type: "GET",
+            url: "{% url 'get_colleges' %}",
+            dataType: "json",
+            success: function(colleges) {
+              if (response.college === null || response.college === undefined)
+                {$("#college-input").hide();
+            } else {
+                $("#edit_college").empty();
+                $.each(colleges, function(index, college) {
+                  var option = $("<option></option>")
+                    .attr("value", college.id)
+                    .text(college.name);
+                  if (college.id === response.college) {
+                    option.attr("selected", "selected");
+                  }
+                  $("#edit_college").append(option);
+                });
+                $("#edit_college").show();
+              }
+            }
+          });
+    
+          $(".position_name").html(response.name);
+        },
+        error: function(xhr, status, error) {
+          console.log('Error:', error);
+        }
+      });
+    }
+  </script>
+
+
+
+  <script>  
+    $(function() {
+        $(document).on('click', '.edit_party', function(e) {
+            e.preventDefault();
+            $('#edit_party').modal('show');
+            var party_id = $(this).data('id');
+            getPartyRow(party_id);
+        });
+        $(document).on('click', '.delete_party', function(e) {
+            e.preventDefault();
+            $('#delete_party').modal('show');
+            var party_id = $(this).data('id');
+            getPartyRow(party_id);
+        });
+    });
+    function getPartyRow(party_id) {
+        $.ajax({
+            type: 'GET',
+            url: '{% url "view_party" %}',
+            data: {
+                party_id: party_id
+            },
+            dataType: 'json',
+            success: function(response) {
+                $('.party_id').val(party_id),
+                $('#party_list_name').val(response.name)
+                $('.party_name').html(response.name);
+            },
+        });
+    }
+    </script>
+
+
+  
+{% endblock javascripts %}

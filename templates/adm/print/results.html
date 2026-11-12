@@ -1,0 +1,64 @@
+{% load static %}
+<html lang="en">
+   <head>
+      <title>
+        RESULTS
+      </title>
+         <!--     Fonts and icons     -->
+         <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+
+   
+         <link rel="stylesheet" href="{% static 'css/black.css' %}">
+        <style>
+
+            body {
+               background-color: rgb(255, 255, 255);
+               margin: 0;
+               line-height: 1.5;
+            }
+        </style>
+    </head>
+    <body>
+      <div class="container-fluid">
+         <div class="text-center">
+            <h1 class="text-center text-dark">
+            {{ title }} Result
+            </h1> 
+         </div>
+            {% for key, value in positions.items %} 
+            <table class="table mb-5">
+            
+                  <tr class="text-center">
+                     <th class="text-center" colspan="3">
+                        {{ key }} | max winners : {{ value.max_vote }}
+                     </th>
+                  </tr>
+               
+               <tr>
+                  <th>Candidate Name </th>
+                  <th class="text-center">Total Votes Recorded</th>
+               </tr>
+           
+               {% for data in value.candidate_data %} 
+               <tbody>
+               <tr>
+                  <th>{{ data.name }}</th>
+                  <th class="text-center">{{ data.votes }}</th>
+               </tr>
+               {% empty %}
+               <tr>
+                  <th colspan="3" class="text-center">No Candidates Vying For This Position</th>
+               </tr>
+               {% endfor %}
+               <tr>
+                  <th class="text-center" colspan="3"> {{ value.winner|safe }} </th>
+               </tr>
+               </tbody>
+            </table>
+            {% endfor %}
+         </div>
+    </body>
+</html>
+
+
+

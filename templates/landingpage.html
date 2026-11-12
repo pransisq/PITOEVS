@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Palompon Institute of Technology | Supreme Student Government Election</title>
+    <link rel="icon"type="image/png" href="{% static 'img/favicon/favicon.ico' %}"/>
+    <link rel="apple-touch-icon" sizes="76x76" src ="{% static 'img/favicon/favicon.ico' %}"/>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <!-- Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    
+    <!-- Nucleo Icons -->
+    <link href="https://appsrv1-147a1.kxcdn.com/black-dashboard-pro-v1.1.2/css/nucleo-icons.css" rel="stylesheet"/> 
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="{% static 'css/aos.css' %}" rel="stylesheet"/>
+    
+    <!-- local CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/black.css' %}">
+
+
+  </head>
+  <body class="white-content">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="100" id="navbar">
+      <div class="container position-sticky z-index-1 top-0 p-2 rounded-lg border-gray border bg-white">
+        <div class="navbar-translate">
+          <a class="navbar-brand" href="{% url 'landingpage' %}">
+            <img src="{% static 'img/landingpage/pit-label.png' %}" class="img-fluid" alt="logo" height="50%" width="70%">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar bar1"></span> 
+            <span class="navbar-toggler-bar bar2"></span>
+            <span class="navbar-toggler-bar bar3"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navigation">
+          <div class="navbar-collapse-header">
+            <div class="row">
+            <div class="col-6 collapse-brand">
+            </div>
+            <div class="col-6 collapse-close text-right">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+            </div>
+          </div>
+            <ul class="navbar-nav text-center">
+              <li class="nav-item">
+                <a class="nav-link text-secondary scrollto" href="#about">
+                  ABOUT
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-secondary scrollto" href="#services">
+                  SERVICES
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-secondary scrollto" href="#contact">
+                  CONTACT 
+                </a>
+              </li>
+              <li class="nav-item">
+                <div class="text-center d-flex justify-content-center">
+                  <a class=" btn btn-success" data-toggle="modal" data-target="#login_modal">LOGIN</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header id="about">
+      <div class="page-header min-vh-85" 
+        style="background-image: url('{% static 'img/landingpage/hero-bgs.png' %}');
+              background-position: center; 
+              background-repeat: no-repeat; 
+              background-size: cover; 
+              width: auto; 
+              height: 105vh;" 
+        loading="lazy"> 
+        <span class="mask bg-gradient-dark opacity-2"></span>
+        <div class="container pt-4">
+          <div class="row pt-4">
+            <div class="mx-auto mt-4">
+              <div class="container mt-5 pt-2">
+                <div class="row" data-aos-delay="600" data-aos="fade-up" data-aos-duration="900" data-aos-easing="ease-in-out">
+                  <div class="col-lg-6 d-flex flex-column justify-content-center text-white">
+                    <h3 class="title text-white">
+                      Empowering Student Voices: Your Vote Matters!
+                    </h3>
+                    <h3 class="description text-white">
+                      Join us in shaping our future through a secure and convenient voting system.
+                    </h3>
+                    <div>
+                        <a href="{% url 'login' %}" class="btn-lg btn-success btn-lg text-center">VOTE NOW!</a>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 hero-img d-flex mt-5 justify-content-center">
+                    <img src="{% static 'img/landingpage/ssg_comselec.png' %}" class="img-fluid mt-2" width="80%">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    <section id="services">
+    <div class="card card-body blur shadow-blur mx-3 mt-n6 mx-md-4 pt-4" aos-init aos-animate data-aos="fade-up" data-aos-delay="200">
+      <div class="space-110 mt-4 pt-md py-md">
+        <div class="mt-2">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-5 col-md-8 col-12 ml-auto mr-auto text-center">
+                <h1 class="title">SERVICES</h1>
+                <!--
+                  <h3 class="category text-info"><strong>Subtitle/Category</strong></h3>                
+                -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4" aos-init aos-animate data-aos="fade-up" data-aos-delay="600">
+                <div class="info info-hover">
+                  <div class="icon icon-primary">
+                    <img src="{% static 'img/landingpage/blob/primary.webp' %}" alt="" class="bg-blob">
+                    <i class="tim-icons icon-user-run"></i>
+                  </div>
+                  <h2 class="info-title">USER-FRIENDLY</h2>
+                  <h4 class="description">
+                    Designed for ease of use, our platform allows studens to cast their votes quickly and efficiently.
+                  </h4>
+                </div>
+              </div>
+              <div class="col-md-4" aos-init aos-animate data-aos="fade-up" data-aos-delay="600">
+                <div class="info info-hover" style="margin-top:-50px;">
+                  <div class="icon icon-warning">
+                    <img src="{% static 'img/landingpage/blob/warning.webp' %}" alt="" class="bg-blob">
+                    <i class="tim-icons icon-lock-circle"></i>
+                  </div>
+                  <h2 class="info-title">SECURE</h2>
+                  <h4 class="description">
+                    Utilizing Djangos' encryption and custom secure authentication methods to protect voter information and ensure fair elections.
+                  </h4>
+                </div>
+              </div>
+              <div class="col-md-4" aos-init aos-animate data-aos="fade-up" data-aos-delay="600">
+                <div class="info info-hover">
+                  <div class="icon icon-success">
+                    <img src="{% static 'img/landingpage/blob/success.webp' %}" alt="" class="bg-blob">
+                    <i class="tim-icons icon-settings"></i>
+                  </div>
+                  <h2 class="info-title">CUSTOMIZABLE OPTIONS</h2>
+                  <h4 class="description">
+                    Tailor the voting process to meet the specific needs of your college, including candidate profiles.
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    
+  <section id="contact">
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4" aos-init aos-animate data-aos="fade-up" data-aos-delay="200">
+      <section id="contact" class="contact">
+       <div class="container py-md pt-md" aos-init aos-animate data-aos="fade-up">
+         <header class="section-header text-center">
+           <h1>Contact Us</h1>
+         </header>
+         <div class="row infos mb-5">
+          <div class="col-lg-4">
+            <div class="info info-hover">
+              <div class="icon icon-primary">
+                <img src="{%static 'img/landingpage/blob/primary.webp' %}" alt="blob" class="bg-blob">
+                <i class="tim-icons icon-square-pin"></i>
+              </div>
+              <h4 class="info-title">Address</h4>
+              <p class="description">Evangelista St., Palompon, Leyte</p>
+            </div>
+          </div>
+          
+          <div class="col-lg-4">
+            <div class="info info-hover">
+              <div class="icon icon-info">
+                <img src="{% static 'img/landingpage/blob/info.webp' %}" alt="" class="bg-blob">
+                <i class="tim-icons icon-email-85"></i>
+              </div>
+              <h4 class="info-title">Email</h4>
+              <p class="description">
+                ssg@pit.edu.ph
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="info info-hover">
+              <div class="icon icon-success">
+                <img src="{% static 'img/landingpage/blob/success.webp' %}" alt="" class="bg-blob">
+                <i class="tim-icons icon-mobile"></i>
+              </div>
+              <h4 class="info-title">Phone Number</h4>
+              <p class="description">
+                +63 965 682 6963
+              </p>
+            </div>
+          </div>
+         </div>
+       </div>
+     </section>
+   </div>
+  </section>
+
+
+  <footer class="footer" id="footer">
+    <div class="row gy-4 justify-content-center align-items-center">
+      <div class="col-lg-12 col-md-12 d-flex align-items-center">
+        <div class="flex-grow-1">
+          <hr class="border border-gray">
+        </div>
+        <img src="{% static 'img/landingpage/ssg_comselec.png' %}" alt="none" class="img-fluid" width="10%" height="auto">
+        <div class="flex-grow-1">
+            <hr class="border border-gray">
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 footer-info">
+        <div class="mt-3">
+          <p>
+            A Capstone Project made by BSIT students of Palompon Institute of Technology.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <div class="modal fade" id="login_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-width-4 border-color-secondary align-items-center pb-2">
+          <h3 class="modal-title"> LOGIN FORM</h3>
+          <button class="close clos" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body justify-content-center">
+          <div class=" col-md-12 text-center">
+            <form role="form" method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="tim-icons icon-single-02"></i>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="ID Number"
+                  class="form-control"
+                  required
+                  id="id_username"
+                />
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="tim-icons icon-lock-circle"></i>
+                  </div>
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  class="form-control"
+                  required
+                  id="id_password"
+                />
+              </div>
+              <div class="m-4">
+                <h6>
+                  <strong>Note:</strong>  Password is case sensitive.
+                </h6>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <button
+                  type="submit"
+                  name="login"
+                  class="btn btn-primary btn-lg btn-block mb-3"
+                >
+                  LOG IN
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include "includes/scripts.html" %}
+  <script>
+    // Function to handle the navbar behavior
+    function handleNavbar() {
+      const navbarToggler = document.querySelector('.navbar-toggler');
+      const navbarCollapse = document.querySelector('#navigation');
+      const navLinks = document.querySelectorAll('a.scrollto');
+  
+      // Add click event listener to each nav-link
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          // Close the navbar
+          if (navbarCollapse.classList.contains('show')) {
+            navbarToggler.click();
+          }
+  
+          // Remove active class from all nav-links
+          navLinks.forEach(nav => nav.classList.remove('active'));
+  
+          // Add active class to the clicked nav-link
+          this.classList.add('active');
+        });
+      });
+  
+      // Set active link on page load based on the current URL hash
+      const currentHash = window.location.hash;
+      if (currentHash) {
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === currentHash) {
+            link.classList.add('active');
+          }
+        });
+      }
+    }
+  
+    // Smooth scrolling functionality
+    document.querySelectorAll('a.scrollto').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+  
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+  
+        if (targetElement) {
+          const headerOffset = 70; 
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+  
+          // Optionally update the URL hash
+          history.pushState(null, null, targetId);
+        }
+      });
+    });
+  
+    // Initialize the navbar behavior
+    document.addEventListener('DOMContentLoaded', handleNavbar);
+  </script>
+  </body>
+</html>

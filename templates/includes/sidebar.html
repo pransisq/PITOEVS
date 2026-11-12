@@ -1,0 +1,82 @@
+{% load static %}
+<div class="navbar-minimize-fixed">
+    <button class="minimize-sidebar btn btn-link btn-just-icon">
+      <i class="tim-icons icon-align-center visible-on-sidebar-regular text-muted"></i>
+      <i class="tim-icons icon-bullet-list-67 visible-on-sidebar-mini text-muted"></i>
+    </button>
+  </div>
+<div class="sidebar" data="green">
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a href="#" class="simple-text logo-mini">
+                    <div class="logo-img">
+                        <img src="{% static 'img/admin/ssg_comselec.png' %}" alt="logo">
+                    </div>
+            </a>
+            <a href="#" class="simple-text logo-normal">
+                  PIT | E-CAST
+            </a>
+        </div>
+        {% if request.user.is_superuser %}
+        <ul class="nav">
+            <li class="{% if 'admin' in segment %} active {% endif %} ">
+                <a href="{% url 'admin_dashboard' %}">
+                    <i class="tim-icons icon-chart-pie-36"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="{% if 'voters' in segment %} active {% endif %}">
+                <a href="{% url 'voters' %}">
+                    <i class="tim-icons icon-single-02"></i>
+                    <p>Voters</p>
+                </a>
+            </li>
+            <li class="{% if 'elec_settings' in segment %} active {% endif %}">
+
+                <a href="{% url 'election_settings' %}">
+                    <i class="tim-icons icon-settings"></i>
+                    <p>Election</p>
+                </a>
+            </li>
+            <li class="{% if 'ballot_position' in segment %} active {% endif %}">
+
+                <a href="{% url 'ballot_position' %}">
+                    <i class="tim-icons icon-molecule-40"></i>
+                    <p>Ballot</p>
+                </a>
+            </li>
+            
+            <li>
+                <a href="#out" data-toggle="modal" class="btn-success btn-lg" type="button">
+                    <i class="tim-icons icon-button-power"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
+        </ul>
+        {% else %}
+        <ul class="nav">
+            <li class="{% if 'voter' in segment %} active {% endif %}">
+                <a href="{% url 'voter_dashboard' %}">
+                    <i class="tim-icons icon-chart-pie-36"></i>
+                    <p>Ballot</p>
+                </a>
+            </li>
+            <li class="{% if 'profile' in segment %} active {% endif %}">
+                <a href="{% url 'user_profile' %}">
+                    <i class="tim-icons icon-single-02"></i>
+                    <p>Profile</p>
+                </a>
+            </li>    
+            <li class="">
+                <a href="#out" data-toggle="modal" class="btn-success btn-lg" type="button">
+                    <i class="tim-icons icon-button-power"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
+           
+        </ul>
+        {% endif %}
+    </div>
+</div> 
+
+
